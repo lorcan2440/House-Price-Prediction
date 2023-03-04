@@ -1,0 +1,16 @@
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+
+#map {
+    height: 320px;
+    width: 500px;
+    float: left;
+    border: 15px solid rgba(0, 0, 0, 0);
+    box-sizing: border-box;
+  }
+  .text-container {
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px; /* Adjust this value to add space between the map and text */
+  }

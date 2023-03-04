@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>House Price Prediction</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='maps.js') }}"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBsqEzIqlO9ylUfo93l_p0o-8H1F0FmGT0&callback=initMap"
+        async defer></script>
+</head>
+  
+
+  <body onload="initMap()">
+
+    <p>
+      <b>House Price Prediction:</b> a simple machine-learning based app for predicting HDB resale prices
+    </p>
+
+    <form id="predictForm", method="post">
+      <fieldset>
+        <legend>House Information</legend>
+
+        <p>
+            Click on the map to choose the HDB location, or manually enter (lat, long) map coordinates here.
+        </p>
+
+        <p>
+            <label for="location">Location of House (Latitude, Longitude):</label>
+            <label>lat:</label>
+            <input id="lat" name="lat" type="text" size="4" value="1.37" />
+            <label>long:</label>
+            <input id="long" name="long" type="text" size="4" value="103.84" />
+        </p>
+        
+        <div id="map"></div>
+
+        <label for="floor-area">Floor Area:</label>
+        <input id="floor-area" name="floor-area" type="text" size="4" value="45" />
+        <label> m<sup>2</sup></label>
+
+        <div class="text-container">
+        <p>
+            <label for="lease-commencement-date">Lease Commencement Year:</label>
+            <select name="lease-commencement-date"
+                id="lease-commencement-date" style="display: inline">
+            <option value="0">1950</option>
+            <option value="1">1951</option>
+            <option value="2">1952</option>
+            <option value="3">1953</option>
+            <option value="4">1954</option>
+            <option value="5">1955</option>
+            <option value="6">1956</option>
+            <option value="7">1957</option>
+            <option value="8">1958</option>
+            <option value="9">1959</option>
+            <option value="10">1960</option>
+            <option value="11">1961</option>
+            <option value="12">1962</option>
+            <option value="13">1963</option>
+            <option value="14">1964</option>
+            <option value="15">1965</option>
+            <option value="16">1966</option>
+            <option value="17">1967</option>
+            <option value="18">1968</option>
+            <option value="19">1969</option>
+            <option value="20">1970</option>
+            <option value="21">1971</option>
+            <option value="22">1972</option>
+            <option value="23">1973</option>
+            <option value="24">1974</option>
+            <option value="25">1975</option>
+            <option value="26">1976</option>
+            <option value="27">1977</option>
+            <option value="28">1978</option>
+            <option value="29">1979</option>
+            <option value="30">1980</option>
+            <option value="31">1981</option>
+            <option value="32">1982</option>
+            <option value="33">1983</option>
+            <option value="34">1984</option>
+            <option value="35">1985</option>
+            <option value="36" selected>1986 </option>
+            <option value="37">1987</option>
+            <option value="38">1988</option>
+            <option value="39">1989</option>
+            <option value="40">1990</option>
+            <option value="41">1991</option>
+            <option value="42">1992</option>
+            <option value="43">1993</option>
+            <option value="44">1994</option>
+            <option value="45">1995</option>
+            <option value="46">1996</option>
+            <option value="47">1997</option>
+            <option value="48">1998</option>
+            <option value="49">1999</option>
+            <option value="50">2000</option>
+            <option value="51">2001</option>
+            <option value="52">2002</option>
+            <option value="53">2003</option>
+            <option value="54">2004</option>
+            <option value="55">2005</option>
+            <option value="56">2006</option>
+            <option value="57">2007</option>
+            <option value="58">2008</option>
+            <option value="59">2009</option>
+            <option value="60">2010</option>
+            <option value="61">2011</option>
+            <option value="62">2012</option>
+            <option value="63">2013</option>
+            <option value="64">2014</option>
+            <option value="65">2015</option>
+            <option value="66">2016</option>
+            <option value="67">2017</option>
+            <option value="68">2018</option>
+            <option value="69">2019</option>
+            <option value="70">2020</option>
+            <option value="71">2021</option>
+            <option value="72">2022</option>
+            <option value="73">2023</option>
+            <option value="74">2024</option>
+            </select>
+        </p>
+
+        <p>
+            <label for="flat-type">HDB Type:</label>
+            <select name="flat-type" id="flat-type" value="2" style="display: inline">
+            <option value="1">1 Room</option>
+            <option value="2" selected>2 Room</option>
+            <option value="3">3 Room</option>
+            <option value="4">4 Room</option>
+            <option value="5">5 Room</option>
+            <option value="6">Executive</option>
+            <option value="7">Multi-Generation</option>
+            </select>
+        </p>
+
+        <p>
+            <label for="flat-model">HDB Model:</label>
+            <select name="flat-model" id="flat-model" value="7" style="display: inline">
+            <option value="1">2-room</option>
+            <option value="14">3Gen</option>
+            <option value="12">Adjoined flat</option>
+            <option value="9">Apartment</option>
+            <option value="15">DBSS</option>
+            <option value="7" selected>Improved</option>
+            <option value="10">Improved-Maisonette</option>
+            <option value="11">Maisonette</option>
+            <option value="6">Model A</option>
+            <option value="13">Model A-Maisonette</option>
+            <option value="4">Model A2</option>
+            <option value="17">Multi Generation</option>
+            <option value="2">New Generation</option>
+            <option value="8">Premium Apartment</option>
+            <option value="19">Premium Apartment Loft</option>
+            <option value="16">Premium Maisonette</option>
+            <option value="3">Simplified</option>
+            <option value="5">Standard</option>
+            <option value="18">Terrace</option>
+            <option value="20">Type S1</option>
+            <option value="21">Type S2</option>
+            </select>
+        </p>
+
+        <p>
+            <label for="town">Town:</label>
+            <select name="town" id="town" value="5", style="display: inline">
+            <option value="5" selected>Ang Mo Kio</option>
+            <option value="6">Bedok</option>
+            <option value="25">Bishan</option>
+            <option value="2">Bukit Batok</option>
+            <option value="23">Bukit Merah</option>
+            <option value="11">Bukit Panjang</option>
+            <option value="26">Bukit Timah</option>
+            <option value="24">Central Area</option>
+            <option value="9">Choa Chu Kang</option>
+            <option value="14">Clementi</option>
+            <option value="10">Geylang</option>
+            <option value="12">Hougang</option>
+            <option value="8">Jurong East</option>
+            <option value="4">Jurong West</option>
+            <option value="19">Kallang/Whampoa</option>
+            <option value="21">Marine Parade</option>
+            <option value="20">Paris Ris</option>
+            <option value="16">Punggol</option>
+            <option value="22">Queenstown</option>
+            <option value="7">Sembawang</option>
+            <option value="13">Sengkang</option>
+            <option value="18">Serangoon</option>
+            <option value="17">Tampines</option>
+            <option value="15">Toa Payoh</option>
+            <option value="3">Woodlands</option>
+            <option value="1">Yishun</option>
+            </select>
+        </p>
+
+        <p>
+        <label for="date">Expected Sale Date:</label>
+        <input type="date" id="date" name="date" value="2023-02-22"
+            min="2012-01-01" max="2030-12-31" style="display: inline">
+        </p>
+
+        <p>
+          <label for="predict-button">Predict:</label>
+          <button id="predict-button" type="button"">Predict</button>
+        </p>
+
+      </fieldset>
+    </div>
+    </form>
+
+    <fieldset>
+      <legend>Predicted Resale Price</legend>
+      <textarea
+        id="outputbox"
+        rows="1"
+        cols="100"
+        readonly="readonly"
+      ></textarea>
+    </fieldset>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script> 
+    <script> 
+        $('#predict-button').on('click', function(e){
+            console.log('Hello')
+            var inputData = {
+                'floor-area': $('#floor-area').val(),
+                'lease-commencement-date': $('#lease-commencement-date').val(),
+                'lat': $('#lat').val(),
+                'long': $('#long').val(),
+                'flat-type': $('#flat-type').val(),
+                'flat-model': $('#flat-model').val(),
+                'town': $('#town').val(),
+                'date': $('#date').val(),
+            }
+            e.preventDefault();
+            $.ajax({ 
+                url: 'http://127.0.0.1:1313/predict/', 
+                data: inputData, 
+                method: 'POST', 
+                success: function(data) { 
+                    // $('#id').val('');  // clear input forms
+                    $('#outputbox').html(data['prediction']) 
+                } 
+            }); 
+        }); 
+    </script>
+
+  </body>
+</html>
+
