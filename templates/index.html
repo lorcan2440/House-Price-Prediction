@@ -234,7 +234,7 @@
             }
             e.preventDefault();
             $.ajax({ 
-                url: 'http://127.0.0.1:1313/predict/', 
+                url: window.location.href + '/predict/', 
                 data: inputData, 
                 method: 'POST', 
                 success: function(data) { 
